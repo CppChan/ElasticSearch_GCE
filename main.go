@@ -86,6 +86,9 @@ func handlerPost(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 		return
 	}
+	id := uuid.New()//generate a random unique id
+	// Save to ES.
+	saveToES(&p, id)
 
 	tbl := bt_client.Open("post")
 	mut := bigtable.NewMutation()
@@ -103,9 +106,6 @@ func handlerPost(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Printf("Post is saved to BigTable: %s\n", p.Message)
 
-	id := uuid.New()//generate a random unique id
-	// Save to ES.
-	saveToES(&p, id)
 }
 
 // Save a post to ElasticSearch
